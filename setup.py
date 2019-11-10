@@ -6,7 +6,7 @@ from os import path
 from setuptools import setup
 
 
-read = lambda filepath: codecs.open(filepath, 'r', 'utf-8').read()
+def read(filepath): return codecs.open(filepath, 'r', 'utf-8').read()
 
 
 setup(
@@ -15,7 +15,8 @@ setup(
     author='Mikhail Podgurskiy',
     author_email='kmmbvnr@gmail.com',
     description='Plug and play continuous integration with django and jenkins',
-    long_description=read(path.abspath(path.join(path.dirname(__file__), 'README.rst'))),
+    long_description=read(path.abspath(
+        path.join(path.dirname(__file__), 'README.rst'))),
     license='LGPL',
     platforms=['Any'],
     keywords=['pyunit', 'unittest', 'testrunner', 'hudson', 'jenkins',
@@ -41,6 +42,7 @@ setup(
     ],
     install_requires=[
         'Django>=1.8',
+        'pycodestyle>=2.5.0'
     ],
     packages=['django_jenkins', 'django_jenkins.management',
               'django_jenkins.tasks', 'django_jenkins.management.commands'],

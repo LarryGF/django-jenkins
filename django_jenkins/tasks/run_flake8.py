@@ -1,5 +1,5 @@
 import os
-import pep8
+import pycodestyle
 import sys
 
 try:
@@ -8,7 +8,8 @@ except ImportError:
     from io import StringIO
 
 
-from flake8.api.legacy import get_style_guide  # Quck hack again, 3d time flake8 would be removed, if no volounters found
+# Quck hack again, 3d time flake8 would be removed, if no volounters found
+from flake8.api.legacy import get_style_guide
 from django.conf import settings
 
 from . import set_option
@@ -18,6 +19,7 @@ class Reporter(object):
     """
     Runs flake8 on python files.
     """
+
     def add_arguments(self, parser):
         parser.add_argument('--max-complexity',
                             dest='flake8-max-complexity',
@@ -27,7 +29,7 @@ class Reporter(object):
                             dest="pep8-exclude",
                             help="exclude files or directories which match these "
                             "comma separated patterns (default: %s)" %
-                            (pep8.DEFAULT_EXCLUDE + ",south_migrations"))
+                            (pycodestyle.DEFAULT_EXCLUDE + ",south_migrations"))
         parser.add_argument("--pep8-select", dest="pep8-select",
                             help="select errors and warnings (e.g. E,W6)")
         parser.add_argument("--pep8-ignore", dest="pep8-ignore",
@@ -35,12 +37,13 @@ class Reporter(object):
         parser.add_argument("--pep8-max-line-length",
                             dest="pep8-max-line-length", type=int,
                             help="set maximum allowed line length (default: %d)" %
-                            pep8.MAX_LINE_LENGTH)
+                            pycodestyle.MAX_LINE_LENGTH)
         parser.add_argument("--pep8-rcfile", dest="pep8-rcfile",
                             help="PEP8 configuration file")
 
     def run(self, apps_locations, **options):
-        output = open(os.path.join(options['output_dir'], 'flake8.report'), 'w')
+        output = open(os.path.join(
+            options['output_dir'], 'flake8.report'), 'w')
 
         pep8_options = {}
 
@@ -49,14 +52,16 @@ class Reporter(object):
             pep8_options['config_file'] = config_file
 
         set_option(pep8_options, 'exclude', options['pep8-exclude'], config_file,
-                   default=pep8.DEFAULT_EXCLUDE + ",south_migrations", split=',')
+                   default=pycodestyle.DEFAULT_EXCLUDE + ",south_migrations", split=',')
 
-        set_option(pep8_options, 'select', options['pep8-select'], config_file, split=',')
+        set_option(pep8_options, 'select',
+                   options['pep8-select'], config_file, split=',')
 
-        set_option(pep8_options, 'ignore', options['pep8-ignore'], config_file, split=',')
+        set_option(pep8_options, 'ignore',
+                   options['pep8-ignore'], config_file, split=',')
 
         set_option(pep8_options, 'max_line_length', options['pep8-max-line-length'], config_file,
-                   default=pep8.MAX_LINE_LENGTH)
+                   default=pycodestyle.MAX_LINE_LENGTH)
 
         set_option(pep8_options, 'max_complexity', options['flake8-max-complexity'], config_file,
                    default=-1)
