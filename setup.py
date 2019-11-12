@@ -42,7 +42,7 @@ setup(
     ],
     install_requires=[
         'Django>=1.8',
-        'pycodestyle>=2.4.0'
+        'pycodestyle==2.5.0'
     ],
     packages=['django_jenkins', 'django_jenkins.management',
               'django_jenkins.tasks', 'django_jenkins.management.commands'],
